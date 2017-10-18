@@ -20,6 +20,8 @@ static const uint32_t monsterCategory        =  0x1 << 1;
 @property (nonatomic,assign) NSTimeInterval lastSpawnTimeInterval;
 @property (nonatomic,assign) int totalScore;
 @property (nonatomic,strong) SKLabelNode *lbNode;
+@property (nonatomic,strong) SKLabelNode *lbTime;
+
 @property (nonatomic,strong) SKEmitterNode *borkenEmitterNode;
 @property (nonatomic,assign) double timeinterval;
 @property (nonatomic,assign) double maxSpeed;
@@ -70,6 +72,7 @@ static inline CGPoint rwNormalize(CGPoint a)
         [self addChild:self.plateNode];
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
+        [self addChild:self.lbTime];
     }
     return self;
 }
@@ -132,9 +135,12 @@ static inline CGPoint rwNormalize(CGPoint a)
     self.lastUpdateTimeInterval = currentTime;
     
     self.lastSpawnTimeInterval += timeSinceLast;
-    if (self.timeinterval < 0.03) {
-        self.timeinterval = 0.03;
+    if (self.timeinterval < 0.01) {
+        self.timeinterval = 0.01;
     }
+//    测试数据
+//    self.timeinterval = 0.01;
+//    测试数据结束
     if (self.lastSpawnTimeInterval > self.timeinterval) {
         self.lastSpawnTimeInterval = 0;
         [self addMonster];
@@ -217,12 +223,12 @@ static inline CGPoint rwNormalize(CGPoint a)
     dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         [emitterNode removeFromParent];
     });
-    [self calculateScores:1];
+    [self calculateScores:2];
     
     
 }
 
-//计分 打中 + 1 逃跑 -1
+//计分 打中 + 2 逃跑 -1
 -(void)calculateScores:(int)score{
     self.totalScore += score;
     
@@ -241,6 +247,17 @@ static inline CGPoint rwNormalize(CGPoint a)
         [self addChild:_lbNode];
     }
     return _lbNode;
+}
+-(SKLabelNode *)lbTime{
+#warning 暂未实现
+    if (!_lbTime) {
+        _lbTime = [[SKLabelNode alloc] init];
+        _lbTime.position = CGPointMake(self.size.width-50, self.size.height-20);
+        _lbTime.fontColor = [SKColor blackColor];
+        _lbTime.fontSize = 14;
+        _lbTime.text = @"时间:00:00:00";
+    }
+    return _lbTime;
 }
 -(SKEmitterNode *)borkenEmitterNode{
     if (!_borkenEmitterNode) {
