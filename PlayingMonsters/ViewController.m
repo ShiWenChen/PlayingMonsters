@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "HomeScene.h"
 
 @interface ViewController ()
 
@@ -16,7 +17,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    SKView *skView = (SKView *)self.view;
+    if (!skView.scene) {
+        skView.showsFPS = YES;
+        skView.showsNodeCount = YES;
+        
+//        创建SCene
+        SKScene *homeScene = [HomeScene sceneWithSize:skView.bounds.size];
+        homeScene.scaleMode = SKSceneScaleModeAspectFill;
+        
+        [skView presentScene:homeScene];
+    }
+    
+
 }
 
 
