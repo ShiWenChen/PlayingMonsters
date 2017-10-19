@@ -7,17 +7,44 @@
 //
 
 #import "GameOverScene.h"
+#import "HomeScene.h"
 
 @implementation GameOverScene
--(instancetype)initWithSize:(CGSize)size adloser:(BOOL)loser{
+-(instancetype)initWithSize:(CGSize)size adSuccessful:(BOOL)success{
     if (self = [super initWithSize:size]) {
-        if (loser) {
-            NSLog(@"失败" );
+        self.backgroundColor = [SKColor whiteColor];
+        NSString *message;
+        if (success) {
+            NSLog(@"成功" );
+            message = @"Ah,you succeeded!😱😱😱";
+            
         }else{
-            NSLog(@"成功");
+            NSLog(@"失败");
+            message = @"Ah,you fail!😞😞😞";
         }
+//        ChalkboardSE-Bold   Chalkduster
+        SKLabelNode *lableNode = [[SKLabelNode alloc]initWithFontNamed:@"Chalkduster"];
+        lableNode.text = message;
+        lableNode.fontSize = 40;
+        lableNode.position = CGPointMake(self.size.width/2, self.size.height/2);
+        lableNode.fontColor = [SKColor blackColor];
+        [self addChild:lableNode];
+        
+        //        Click anywhere to start again
+        
+        SKLabelNode *lableAgain = [[SKLabelNode alloc]initWithFontNamed:@"ChalkboardSE-Bold"];
+        lableAgain.text = @"Touch anywhere to challenge again😊";
+        lableAgain.fontSize = 20;
+        lableAgain.position = CGPointMake(self.size.width/2, self.size.height/2-100);
+        lableAgain.fontColor = [SKColor greenColor];
+        [self addChild:lableAgain];
+        
     }
     return self;
 }
 
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    HomeScene *homeScene = [[HomeScene alloc] initWithSize:self.size];
+    [self.view presentScene:homeScene transition:[SKTransition doorsOpenVerticalWithDuration:1]];
+}
 @end

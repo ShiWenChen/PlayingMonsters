@@ -71,14 +71,14 @@ static inline CGPoint rwNormalize(CGPoint a)
         self.minSpeed = 4.00;
         self.maxSpeed = 6.00;
 
-        self.backgroundColor = [SKColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
+        self.backgroundColor = [SKColor colorWithRed:95.0/255.0 green:195.0/255.0 blue:1 alpha:1.0];
         self.plateNode = [SKSpriteNode spriteNodeWithImageNamed:@"player.png"];
         self.plateNode.position = CGPointMake(self.plateNode.size.width/2, self.size.height/2);
         [self addChild:self.plateNode];
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
 
-        
+
         
         
         [self addChild:self.lbTime];
@@ -94,11 +94,11 @@ static inline CGPoint rwNormalize(CGPoint a)
     monster.physicsBody.contactTestBitMask = projectileCategory;
     monster.physicsBody.collisionBitMask = 0;
 //    在Y轴随机产生怪物
-    double minY = monster.size.height/2;
-    double maxY = self.frame.size.height - monster.size.height/2;
-    double rangeY = maxY - minY;
-//    int Y = (arc4random() % rangeY) + minY;
-    double Y = floorf(((double)arc4random() / ARC4RANDOM_MAX) * rangeY);
+    int minY = monster.size.height/2;
+    int maxY = self.frame.size.height - monster.size.height/2;
+    int rangeY = maxY - minY;
+    int Y = (arc4random() % rangeY) + minY;
+//    double Y = floorf(((double)arc4random() / ARC4RANDOM_MAX) * rangeY);
     
 //    设置怪物坐标 在屏幕右侧边缘
     monster.position = CGPointMake(self.size.width +monster.size.width/2, Y);
@@ -187,6 +187,11 @@ static inline CGPoint rwNormalize(CGPoint a)
     CGPoint shootAmout = rwMult(drection, 1000);
 //    计算最终向量
     CGPoint endPoint = add(shootAmout, projectile.position);
+    
+//  让子弹转起来
+    SKAction *rotateAction = [SKAction rotateByAngle:360 duration:1];
+    [projectile runAction:[SKAction repeatActionForever:rotateAction]];
+    
     
     
 //    移动速度
@@ -303,7 +308,8 @@ static inline CGPoint rwNormalize(CGPoint a)
 -(void)gameOverWithRelust:(BOOL)relust{
     dispatch_source_cancel(timer);
     self.timeCount = 0;
-    GameOverScene *gameOver = [[GameOverScene alloc] initWithSize:self.size adloser:relust];
+    self.totalScore = 0;
+    GameOverScene *gameOver = [[GameOverScene alloc] initWithSize:self.size adSuccessful:relust];
     
     [self.view presentScene:gameOver transition:[SKTransition doorsCloseVerticalWithDuration:1]];
 }

@@ -11,10 +11,10 @@
 		8383ED7F1F95C0A6006BCC57 /* sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 8396365B1F95B94D00F508F5 /* sprites.atlas */; };
 		8383ED801F970391006BCC57 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = 839636591F95B94D00F508F5 /* background-music-aac.caf */; };
 		8383ED811F970395006BCC57 /* pew-pew-lei.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8396365A1F95B94D00F508F5 /* pew-pew-lei.caf */; };
-		8383ED8B1F974CD1006BCC57 /* smoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8383ED8A1F974CD1006BCC57 /* smoke.sks */; };
 		8383ED8F1F975240006BCC57 /* shoot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8383ED8D1F9751F2006BCC57 /* shoot.wav */; };
 		8383ED901F975243006BCC57 /* enemyHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8383ED8E1F9751F2006BCC57 /* enemyHit.wav */; };
 		8383ED911F97548A006BCC57 /* broken.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8383ED8C1F975129006BCC57 /* broken.sks */; };
+		8383ED991F989B10006BCC57 /* ReadyScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383ED981F989B10006BCC57 /* ReadyScene.m */; };
 		839636281F95B91300F508F5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 839636271F95B91300F508F5 /* AppDelegate.m */; };
 		8396362B1F95B91300F508F5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8396362A1F95B91300F508F5 /* ViewController.m */; };
 		8396362E1F95B91300F508F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8396362C1F95B91300F508F5 /* Main.storyboard */; };
@@ -46,10 +46,11 @@
 /* Begin PBXFileReference section */
 		8383ED7C1F95BBA3006BCC57 /* HomeScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeScene.h; sourceTree = "<group>"; };
 		8383ED7D1F95BBA3006BCC57 /* HomeScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeScene.m; sourceTree = "<group>"; };
-		8383ED8A1F974CD1006BCC57 /* smoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = smoke.sks; sourceTree = "<group>"; };
 		8383ED8C1F975129006BCC57 /* broken.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = broken.sks; sourceTree = "<group>"; };
 		8383ED8D1F9751F2006BCC57 /* shoot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = shoot.wav; sourceTree = "<group>"; };
 		8383ED8E1F9751F2006BCC57 /* enemyHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = enemyHit.wav; sourceTree = "<group>"; };
+		8383ED971F989B10006BCC57 /* ReadyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadyScene.h; sourceTree = "<group>"; };
+		8383ED981F989B10006BCC57 /* ReadyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReadyScene.m; sourceTree = "<group>"; };
 		839636231F95B91300F508F5 /* PlayingMonsters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayingMonsters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		839636261F95B91300F508F5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		839636271F95B91300F508F5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -133,7 +134,6 @@
 				839636351F95B91300F508F5 /* main.m */,
 				839636581F95B94D00F508F5 /* Sounds */,
 				8396365B1F95B94D00F508F5 /* sprites.atlas */,
-				8383ED8A1F974CD1006BCC57 /* smoke.sks */,
 				8383ED8C1F975129006BCC57 /* broken.sks */,
 			);
 			path = PlayingMonsters;
@@ -175,6 +175,8 @@
 				839636611F95B9AA00F508F5 /* GameOverScene.m */,
 				8383ED7C1F95BBA3006BCC57 /* HomeScene.h */,
 				8383ED7D1F95BBA3006BCC57 /* HomeScene.m */,
+				8383ED971F989B10006BCC57 /* ReadyScene.h */,
+				8383ED981F989B10006BCC57 /* ReadyScene.m */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -294,7 +296,6 @@
 				839636331F95B91300F508F5 /* LaunchScreen.storyboard in Resources */,
 				839636301F95B91300F508F5 /* Assets.xcassets in Resources */,
 				8396362E1F95B91300F508F5 /* Main.storyboard in Resources */,
-				8383ED8B1F974CD1006BCC57 /* smoke.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +324,7 @@
 				8396362B1F95B91300F508F5 /* ViewController.m in Sources */,
 				839636361F95B91300F508F5 /* main.m in Sources */,
 				839636281F95B91300F508F5 /* AppDelegate.m in Sources */,
+				8383ED991F989B10006BCC57 /* ReadyScene.m in Sources */,
 				8383ED7E1F95BBA3006BCC57 /* HomeScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

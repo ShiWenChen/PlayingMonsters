@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "HomeScene.h"
+#import "ReadyScene.h"
 
 @interface ViewController ()
 
@@ -23,7 +23,7 @@
         skView.showsNodeCount = YES;
         
 //        创建SCene
-        SKScene *homeScene = [HomeScene sceneWithSize:CGSizeMake(skView.bounds.size.width, skView.bounds.size.height)];
+        SKScene *homeScene = [ReadyScene sceneWithSize:CGSizeMake(skView.bounds.size.width, skView.bounds.size.height)];
         homeScene.scaleMode = SKSceneScaleModeAspectFill;
         
         [skView presentScene:homeScene];
