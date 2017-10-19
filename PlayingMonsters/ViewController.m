@@ -20,8 +20,6 @@
     SKView *skView = (SKView *)self.view;
     if (!skView.scene) {
         skView.showsFPS = YES;
-        skView.showsNodeCount = YES;
-        
 //        创建SCene
         SKScene *homeScene = [ReadyScene sceneWithSize:CGSizeMake(skView.bounds.size.width, skView.bounds.size.height)];
         homeScene.scaleMode = SKSceneScaleModeAspectFill;

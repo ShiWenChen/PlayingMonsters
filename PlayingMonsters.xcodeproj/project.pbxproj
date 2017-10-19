@@ -51,6 +51,7 @@
 		8383ED8E1F9751F2006BCC57 /* enemyHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = enemyHit.wav; sourceTree = "<group>"; };
 		8383ED971F989B10006BCC57 /* ReadyScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadyScene.h; sourceTree = "<group>"; };
 		8383ED981F989B10006BCC57 /* ReadyScene.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReadyScene.m; sourceTree = "<group>"; };
+		8383ED9E1F98AA95006BCC57 /* preview.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = preview.gif; path = PlayingMonsters/preview.gif; sourceTree = SOURCE_ROOT; };
 		839636231F95B91300F508F5 /* PlayingMonsters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayingMonsters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		839636261F95B91300F508F5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		839636271F95B91300F508F5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -142,6 +143,7 @@
 		8396363E1F95B91300F508F5 /* PlayingMonstersTests */ = {
 			isa = PBXGroup;
 			children = (
+				8383ED9E1F98AA95006BCC57 /* preview.gif */,
 				8396363F1F95B91300F508F5 /* PlayingMonstersTests.m */,
 				839636411F95B91300F508F5 /* Info.plist */,
 			);
