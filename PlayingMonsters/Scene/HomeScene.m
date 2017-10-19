@@ -8,11 +8,16 @@
 
 #import "HomeScene.h"
 #import "GameOverScene.h"
+#define ARC4RANDOM_MAX      0x100000000
 //碰撞区分
 static const uint32_t projectileCategory     =  0x1 << 0;
 static const uint32_t monsterCategory        =  0x1 << 1;
 
 @interface HomeScene()<SKPhysicsContactDelegate>
+{
+    dispatch_source_t timer;
+    
+}
 
 @property (nonatomic,strong) SKSpriteNode *plateNode;
 
@@ -26,7 +31,7 @@ static const uint32_t monsterCategory        =  0x1 << 1;
 @property (nonatomic,assign) double timeinterval;
 @property (nonatomic,assign) double maxSpeed;
 @property (nonatomic,assign) double minSpeed;
-
+@property (nonatomic,assign) int timeCount;
 
 @end
 //建议内联函数 点加
@@ -72,6 +77,10 @@ static inline CGPoint rwNormalize(CGPoint a)
         [self addChild:self.plateNode];
         self.physicsWorld.gravity = CGVectorMake(0, 0);
         self.physicsWorld.contactDelegate = self;
+
+        
+        
+        
         [self addChild:self.lbTime];
     }
     return self;
@@ -85,10 +94,11 @@ static inline CGPoint rwNormalize(CGPoint a)
     monster.physicsBody.contactTestBitMask = projectileCategory;
     monster.physicsBody.collisionBitMask = 0;
 //    在Y轴随机产生怪物
-    int minY = monster.size.height/2;
-    int maxY = self.frame.size.height - monster.size.height/2;
-    int rangeY = maxY - minY;
-    int Y = (arc4random() % rangeY) + minY;
+    double minY = monster.size.height/2;
+    double maxY = self.frame.size.height - monster.size.height/2;
+    double rangeY = maxY - minY;
+//    int Y = (arc4random() % rangeY) + minY;
+    double Y = floorf(((double)arc4random() / ARC4RANDOM_MAX) * rangeY);
     
 //    设置怪物坐标 在屏幕右侧边缘
     monster.position = CGPointMake(self.size.width +monster.size.width/2, Y);
@@ -103,9 +113,9 @@ static inline CGPoint rwNormalize(CGPoint a)
     if (self.maxSpeed < 2) {
         self.maxSpeed = 2;
     }
-    int rangeDuration = self.maxSpeed - self.minSpeed;
-    int actualDuration = (arc4random() % rangeDuration) + self.minSpeed;
-    
+    double rangeDuration = self.maxSpeed - self.minSpeed;
+    double actualDuration = floorf(((double)arc4random() / ARC4RANDOM_MAX) * rangeDuration)+ self.minSpeed;
+
 //    创建移动动画
     SKAction *actionMove = [SKAction moveTo:CGPointMake(-monster.size.width/2, Y) duration:actualDuration];
     SKAction *removeNode = [SKAction removeFromParent];
@@ -135,11 +145,11 @@ static inline CGPoint rwNormalize(CGPoint a)
     self.lastUpdateTimeInterval = currentTime;
     
     self.lastSpawnTimeInterval += timeSinceLast;
-    if (self.timeinterval < 0.01) {
-        self.timeinterval = 0.01;
+    if (self.timeinterval < 0.0) {
+        self.timeinterval = 0;
     }
 //    测试数据
-//    self.timeinterval = 0.01;
+//    self.timeinterval = 0;
 //    测试数据结束
     if (self.lastSpawnTimeInterval > self.timeinterval) {
         self.lastSpawnTimeInterval = 0;
@@ -231,10 +241,11 @@ static inline CGPoint rwNormalize(CGPoint a)
 //计分 打中 + 2 逃跑 -1
 -(void)calculateScores:(int)score{
     self.totalScore += score;
-    
-#warning    增加特效，分数变化
-    
+    if (self.totalScore == -2000) {
+        [self gameOverWithRelust:NO];
+    }
     self.lbNode.text = [NSString stringWithFormat:@"目前得分:%i",self.totalScore];
+    
     
     
 }
@@ -244,20 +255,42 @@ static inline CGPoint rwNormalize(CGPoint a)
         _lbNode.position = CGPointMake(self.size.width/2, self.size.height-20);
         _lbNode.fontColor = [SKColor redColor];
         _lbNode.fontSize = 14;
+        _lbNode.text = @"目前得分:0";
         [self addChild:_lbNode];
     }
     return _lbNode;
 }
 -(SKLabelNode *)lbTime{
-#warning 暂未实现
     if (!_lbTime) {
         _lbTime = [[SKLabelNode alloc] init];
         _lbTime.position = CGPointMake(self.size.width-50, self.size.height-20);
         _lbTime.fontColor = [SKColor blackColor];
+        
         _lbTime.fontSize = 14;
-        _lbTime.text = @"时间:00:00:00";
+        [self timeStr];
+
     }
     return _lbTime;
+}
+-(void)timeStr{
+    //        创建队列
+    dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, globalQueue);
+    dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), 1.0*NSEC_PER_SEC, 0);
+    dispatch_source_set_event_handler(timer, ^{
+        int hours = self.timeCount / 3600;
+        int minutes = (self.timeCount - (3600*hours)) / 60;
+        int seconds = self.timeCount % 60;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (minutes == 5) {
+                [self gameOverWithRelust:YES];
+            }
+           self.lbTime.text = [NSString stringWithFormat:@"%.2d:%.2d:%.2d",hours,minutes,seconds];
+        });
+        self.timeCount ++;
+        
+    });
+    dispatch_resume(timer);
 }
 -(SKEmitterNode *)borkenEmitterNode{
     if (!_borkenEmitterNode) {
@@ -266,8 +299,14 @@ static inline CGPoint rwNormalize(CGPoint a)
     }
     return _borkenEmitterNode;
 }
-
-
+//成绩低于-2000或者时间超过5分钟，结束游戏 超过5分钟，成功
+-(void)gameOverWithRelust:(BOOL)relust{
+    dispatch_source_cancel(timer);
+    self.timeCount = 0;
+    GameOverScene *gameOver = [[GameOverScene alloc] initWithSize:self.size adloser:relust];
+    
+    [self.view presentScene:gameOver transition:[SKTransition doorsCloseVerticalWithDuration:1]];
+}
 
 
 
